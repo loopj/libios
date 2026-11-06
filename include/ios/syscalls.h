@@ -455,6 +455,20 @@ int32_t IOS_IoctlvAsync(int32_t fd, uint32_t request, uint32_t in_count, uint32_
 int32_t IOS_ResourceReply(struct ipcmessage *request, int32_t result);
 
 /**
+ * Get the calling process's user ID, which starts equal to its process ID.
+ *
+ * @return the user ID
+ */
+uint32_t IOS_GetUid(void);
+
+/**
+ * Get the calling process's group ID, which starts equal to its process ID.
+ *
+ * @return the group ID
+ */
+uint16_t IOS_GetGid(void);
+
+/**
  * Drain the AHB write buffer of a device, so its DMA reads what the CPU wrote.
  *
  * @param device the device's AHB number

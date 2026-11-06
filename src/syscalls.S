@@ -55,6 +55,8 @@
 	syscall 0x28, IOS_IoctlAsync
 	syscall 0x29, IOS_IoctlvAsync
 	syscall 0x2a, IOS_ResourceReply
+	syscall 0x2c, IOS_GetUid
+	syscall 0x2e, IOS_GetGid
 	syscall 0x2f, IOS_AhbMemFlush
 	syscall 0x30, IOS_AhbMemRBInvalidate
 	syscall 0x32, IOS_ClearAndEnableDIIntr

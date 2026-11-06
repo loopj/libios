@@ -41,6 +41,17 @@
 	syscall 0x1a, IOS_Free
 	syscall 0x1b, IOS_RegisterResourceManager
 	syscall 0x1c, IOS_Open
+	syscall 0x1d, IOS_Close
+	syscall 0x1e, IOS_Read
+	syscall 0x1f, IOS_Write
+	syscall 0x20, IOS_Seek
+	syscall 0x21, IOS_Ioctl
+	syscall 0x22, IOS_Ioctlv
+	syscall 0x23, IOS_OpenAsync
+	syscall 0x24, IOS_CloseAsync
+	syscall 0x25, IOS_ReadAsync
+	syscall 0x26, IOS_WriteAsync
+	syscall 0x27, IOS_SeekAsync
 	syscall 0x28, IOS_IoctlAsync
 	syscall 0x29, IOS_IoctlvAsync
 	syscall 0x2a, IOS_ResourceReply

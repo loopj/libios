@@ -295,6 +295,126 @@ int32_t IOS_RegisterResourceManager(const char *path, int32_t queue);
 int32_t IOS_Open(const char *path, uint32_t mode);
 
 /**
+ * Close a descriptor.
+ *
+ * @param fd the descriptor
+ * @return IOS_ERROR_OK or a negative result
+ */
+int32_t IOS_Close(int32_t fd);
+
+/**
+ * Read from a device.
+ *
+ * @param fd the descriptor
+ * @param data the buffer read into
+ * @param len the buffer's length in bytes
+ * @return the bytes read, or a negative result
+ */
+int32_t IOS_Read(int32_t fd, void *data, uint32_t len);
+
+/**
+ * Write to a device.
+ *
+ * @param fd the descriptor
+ * @param data the bytes written
+ * @param len their length in bytes
+ * @return the bytes written, or a negative result
+ */
+int32_t IOS_Write(int32_t fd, const void *data, uint32_t len);
+
+/**
+ * Move a device's position.
+ *
+ * @param fd the descriptor
+ * @param offset the offset
+ * @param origin 0 to count from the start, 1 from the current position, or 2 from the end
+ * @return the new position, or a negative result
+ */
+int32_t IOS_Seek(int32_t fd, int32_t offset, int32_t origin);
+
+/**
+ * Send an ioctl.
+ *
+ * @param fd the descriptor
+ * @param request the request number
+ * @param in the input buffer
+ * @param in_len the input's length in bytes
+ * @param out the output buffer
+ * @param out_len the output's length in bytes
+ * @return the resource manager's result
+ */
+int32_t IOS_Ioctl(int32_t fd, uint32_t request, void *in, uint32_t in_len, void *out, uint32_t out_len);
+
+/**
+ * Send an ioctlv.
+ *
+ * @param fd the descriptor
+ * @param request the request number
+ * @param in_count the number of input vectors, first in the array
+ * @param out_count the number of output vectors, after the inputs
+ * @param vectors the vectors
+ * @return the resource manager's result
+ */
+int32_t IOS_Ioctlv(int32_t fd, uint32_t request, uint32_t in_count, uint32_t out_count, struct ioctlv *vectors);
+
+/**
+ * Open a device and post the answer to a queue, still waiting like IOS_Open.
+ *
+ * @param path the device path
+ * @param mode the open mode
+ * @param queue the queue the reply is posted to
+ * @param reply where the kernel writes the result, 32-byte aligned
+ * @return IOS_ERROR_OK once answered, or a negative result
+ */
+int32_t IOS_OpenAsync(const char *path, uint32_t mode, int32_t queue, struct ipcmessage *reply);
+
+/**
+ * Close a descriptor without waiting, the answer posted to a queue as the reply's address.
+ *
+ * @param fd the descriptor
+ * @param queue the queue the reply is posted to
+ * @param reply where the kernel writes the result, 32-byte aligned
+ * @return IOS_ERROR_OK once sent, or a negative result
+ */
+int32_t IOS_CloseAsync(int32_t fd, int32_t queue, struct ipcmessage *reply);
+
+/**
+ * Read from a device without waiting, the answer posted to a queue as the reply's address.
+ *
+ * @param fd the descriptor
+ * @param data the buffer read into
+ * @param len the buffer's length in bytes
+ * @param queue the queue the reply is posted to
+ * @param reply where the kernel writes the result, 32-byte aligned
+ * @return IOS_ERROR_OK once sent, or a negative result
+ */
+int32_t IOS_ReadAsync(int32_t fd, void *data, uint32_t len, int32_t queue, struct ipcmessage *reply);
+
+/**
+ * Write to a device without waiting, the answer posted to a queue as the reply's address.
+ *
+ * @param fd the descriptor
+ * @param data the bytes written
+ * @param len their length in bytes
+ * @param queue the queue the reply is posted to
+ * @param reply where the kernel writes the result, 32-byte aligned
+ * @return IOS_ERROR_OK once sent, or a negative result
+ */
+int32_t IOS_WriteAsync(int32_t fd, const void *data, uint32_t len, int32_t queue, struct ipcmessage *reply);
+
+/**
+ * Move a device's position without waiting, the answer posted to a queue as the reply's address.
+ *
+ * @param fd the descriptor
+ * @param offset the offset
+ * @param origin 0 to count from the start, 1 from the current position, or 2 from the end
+ * @param queue the queue the reply is posted to
+ * @param reply where the kernel writes the result, 32-byte aligned
+ * @return IOS_ERROR_OK once sent, or a negative result
+ */
+int32_t IOS_SeekAsync(int32_t fd, int32_t offset, int32_t origin, int32_t queue, struct ipcmessage *reply);
+
+/**
  * Send an ioctl without waiting, the answer posted to a queue as the reply's address.
  *
  * @param fd the descriptor

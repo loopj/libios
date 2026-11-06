@@ -57,7 +57,6 @@
 	syscall 0x2a, IOS_ResourceReply
 	syscall 0x2f, IOS_AhbMemFlush
 	syscall 0x30, IOS_AhbMemRBInvalidate
-	syscall 0x31, IOS_ClearAndEnableIPCIOPIntr
 	syscall 0x32, IOS_ClearAndEnableDIIntr
 	syscall 0x33, IOS_ClearAndEnableSDIntr
 	syscall 0x34, IOS_ClearAndEnableEvent

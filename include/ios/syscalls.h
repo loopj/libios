@@ -471,13 +471,6 @@ int32_t IOS_AhbMemFlush(uint32_t device);
 int32_t IOS_AhbMemRBInvalidate(uint32_t device);
 
 /**
- * Clear and unmask the PowerPC IPC interrupt.
- *
- * @return IOS_ERROR_OK, or IOS_ERROR_ACCESS for any other process
- */
-int32_t IOS_ClearAndEnableIPCIOPIntr(void);
-
-/**
  * Clear and unmask the disc drive interrupt.
  *
  * @return IOS_ERROR_OK, or IOS_ERROR_ACCESS for any other process

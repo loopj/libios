@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "iobuf.h"
 #include "ipc.h"
 
 /** Results the kernel returns, negative on failure. */
@@ -206,21 +207,64 @@ int32_t IOS_AhbMemRBInvalidate(uint32_t device);
 int32_t IOS_ClearAndEnableSDIntr(uint32_t controller);
 
 /**
- * Allocate an iobuf, the buffer NCD and SO pass network frames in.
+ * Ask for access to an iobuf pool.
  *
- * @param arg an argument of unknown meaning, to pass as NULL
- * @param size the data length in bytes
+ * @param pool the pool, 0 for the only one
+ * @return IOS_ERROR_OK
+ */
+int32_t IOS_AccessIobPool(uint32_t pool);
+
+/**
+ * Allocate an iobuf with an empty data window at the start of its buffer.
+ *
+ * @param pool the pool, 0 for the only one
+ * @param size the buffer size needed in bytes, at most 0x1000
  * @return the iobuf, or NULL
  */
-void *IOS_AllocIobuf(void *arg, uint32_t size);
+struct iobuf *IOS_AllocIobuf(uint32_t pool, uint32_t size);
+
+/**
+ * Release an iobuf, freeing it once no other module holds it.
+ *
+ * @param iobuf the iobuf
+ * @return IOS_ERROR_OK or IOS_ERROR_INVALID for a pointer that is not an iobuf
+ */
+int32_t IOS_FreeIobuf(struct iobuf *iobuf);
+
+/**
+ * Grow an iobuf's data at its end.
+ *
+ * @param iobuf the iobuf
+ * @param len the bytes to add
+ * @return where the added bytes start, or NULL when the buffer has no room
+ */
+void *IOS_ExtendIobuf(struct iobuf *iobuf, uint16_t len);
+
+/**
+ * Grow an iobuf's data at its start, such as to add a header.
+ *
+ * @param iobuf the iobuf
+ * @param len the bytes to add
+ * @return the new start of the data, or NULL when the buffer has no room
+ */
+void *IOS_PushIob(struct iobuf *iobuf, uint16_t len);
+
+/**
+ * Shrink an iobuf's data at its start, such as to strip a header.
+ *
+ * @param iobuf the iobuf
+ * @param len the bytes to remove
+ * @return where the removed bytes start, or NULL when the data is shorter than len
+ */
+void *IOS_PullIob(struct iobuf *iobuf, uint16_t len);
 
 /**
  * Check that a pointer is a live iobuf.
  *
  * @param iobuf the iobuf
- * @return IOS_ERROR_OK or a negative result
+ * @return IOS_ERROR_OK or IOS_ERROR_INVALID
  */
-int32_t IOS_VerifyIobuf(void *iobuf);
+int32_t IOS_VerifyIobuf(const struct iobuf *iobuf);
 
 /**
  * Drop the data cache lines over a range without writing them back.

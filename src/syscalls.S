@@ -29,7 +29,12 @@
 	syscall 0x2f, IOS_AhbMemFlush
 	syscall 0x30, IOS_AhbMemRBInvalidate
 	syscall 0x33, IOS_ClearAndEnableSDIntr
+	syscall 0x35, IOS_AccessIobPool
 	syscall 0x36, IOS_AllocIobuf
+	syscall 0x37, IOS_FreeIobuf
+	syscall 0x3a, IOS_ExtendIobuf
+	syscall 0x3b, IOS_PushIob
+	syscall 0x3c, IOS_PullIob
 	syscall 0x3d, IOS_VerifyIobuf
 	syscall 0x3f, IOS_InvalidateDCache
 	syscall 0x40, IOS_FlushDCache

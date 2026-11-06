@@ -132,6 +132,34 @@ int32_t IOS_SetThreadPriority(int32_t thread, int32_t priority);
 int32_t IOS_CreateMessageQueue(uint32_t *buffer, uint32_t count);
 
 /**
+ * Free a message queue, waking every thread that waits on it with an error.
+ *
+ * @param queue the queue's id
+ * @return IOS_ERROR_OK, IOS_ERROR_ACCESS for another process's queue, or IOS_ERROR_INVALID
+ */
+int32_t IOS_DestroyMessageQueue(int32_t queue);
+
+/**
+ * Add a message to the back of a queue of the calling process.
+ *
+ * @param queue the queue's id
+ * @param message the message
+ * @param flags 0 to wait while the queue is full, or 1 to return IOS_ERROR_QUEUE_FULL
+ * @return IOS_ERROR_OK, IOS_ERROR_ACCESS for another process's queue, or another negative result
+ */
+int32_t IOS_SendMessage(int32_t queue, uint32_t message, uint32_t flags);
+
+/**
+ * Add a message to the front of a queue of the calling process, so it is received next.
+ *
+ * @param queue the queue's id
+ * @param message the message
+ * @param flags 0 to wait while the queue is full, or 1 to return IOS_ERROR_QUEUE_FULL
+ * @return IOS_ERROR_OK, IOS_ERROR_ACCESS for another process's queue, or another negative result
+ */
+int32_t IOS_JamMessage(int32_t queue, uint32_t message, uint32_t flags);
+
+/**
  * Take the next message from a queue.
  *
  * @param queue the queue's id
@@ -152,6 +180,14 @@ int32_t IOS_ReceiveMessage(int32_t queue, uint32_t *message, uint32_t flags);
 int32_t IOS_HandleEvent(uint32_t event, int32_t queue, uint32_t message);
 
 /**
+ * Stop posting messages for a hardware event IOS_HandleEvent set up.
+ *
+ * @param event the event's number
+ * @return IOS_ERROR_OK, IOS_ERROR_ACCESS for another process's event, or IOS_ERROR_INVALID
+ */
+int32_t IOS_UnregisterEventHandler(uint32_t event);
+
+/**
  * Create a timer that posts a message to a queue.
  *
  * @param time_us the wait before the first message, in microseconds
@@ -161,6 +197,24 @@ int32_t IOS_HandleEvent(uint32_t event, int32_t queue, uint32_t message);
  * @return the timer's id or a negative result
  */
 int32_t IOS_CreateTimer(uint32_t time_us, uint32_t repeat_us, int32_t queue, uint32_t message);
+
+/**
+ * Start a stopped timer again with new waits, keeping its queue and message.
+ *
+ * @param timer the timer's id
+ * @param time_us the wait before the first message, in microseconds
+ * @param repeat_us the wait between later messages, or 0 for one message
+ * @return IOS_ERROR_OK, IOS_ERROR_ACCESS for another process's timer, or IOS_ERROR_INVALID for one still running
+ */
+int32_t IOS_RestartTimer(int32_t timer, uint32_t time_us, uint32_t repeat_us);
+
+/**
+ * Stop a timer without freeing it, so IOS_RestartTimer can start it again.
+ *
+ * @param timer the timer's id
+ * @return IOS_ERROR_OK, IOS_ERROR_ACCESS for another process's timer, or IOS_ERROR_INVALID
+ */
+int32_t IOS_StopTimer(int32_t timer);
 
 /**
  * Stop and free a timer.

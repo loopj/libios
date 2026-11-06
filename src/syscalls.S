@@ -23,9 +23,15 @@
 	syscall 0x08, IOS_GetThreadPriority
 	syscall 0x09, IOS_SetThreadPriority
 	syscall 0x0a, IOS_CreateMessageQueue
+	syscall 0x0b, IOS_DestroyMessageQueue
+	syscall 0x0c, IOS_SendMessage
+	syscall 0x0d, IOS_JamMessage
 	syscall 0x0e, IOS_ReceiveMessage
 	syscall 0x0f, IOS_HandleEvent
+	syscall 0x10, IOS_UnregisterEventHandler
 	syscall 0x11, IOS_CreateTimer
+	syscall 0x12, IOS_RestartTimer
+	syscall 0x13, IOS_StopTimer
 	syscall 0x14, IOS_DestroyTimer
 	syscall 0x15, IOS_GetTime
 	syscall 0x1b, IOS_RegisterResourceManager

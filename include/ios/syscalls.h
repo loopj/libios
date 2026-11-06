@@ -471,12 +471,34 @@ int32_t IOS_AhbMemFlush(uint32_t device);
 int32_t IOS_AhbMemRBInvalidate(uint32_t device);
 
 /**
+ * Clear and unmask the PowerPC IPC interrupt.
+ *
+ * @return IOS_ERROR_OK, or IOS_ERROR_ACCESS for any other process
+ */
+int32_t IOS_ClearAndEnableIPCIOPIntr(void);
+
+/**
+ * Clear and unmask the disc drive interrupt.
+ *
+ * @return IOS_ERROR_OK, or IOS_ERROR_ACCESS for any other process
+ */
+int32_t IOS_ClearAndEnableDIIntr(void);
+
+/**
  * Clear and unmask an SD controller's interrupt, for the one process that owns it.
  *
  * @param controller 0 for the SD slot, 1 for the Wi-Fi card, which only process 11 owns
  * @return IOS_ERROR_OK, IOS_ERROR_ACCESS for another process's controller, or another negative result
  */
 int32_t IOS_ClearAndEnableSDIntr(uint32_t controller);
+
+/**
+ * Clear and unmask a hardware event's interrupt.
+ *
+ * @param event the event's number
+ * @return IOS_ERROR_OK, IOS_ERROR_ACCESS for another process's event, or IOS_ERROR_INVALID for an event with no owner
+ */
+int32_t IOS_ClearAndEnableEvent(uint32_t event);
 
 /**
  * Ask for access to an iobuf pool.

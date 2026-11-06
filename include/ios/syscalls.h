@@ -53,6 +53,15 @@ int32_t IOS_CreateThread(ios_thread_entry entry, void *arg, void *stack_top, uin
                          bool detached);
 
 /**
+ * Wait for another thread of the calling process to end, then free it.
+ *
+ * @param thread the thread's id
+ * @param exit_value where the thread's exit value is written, or NULL
+ * @return IOS_ERROR_OK, or IOS_ERROR_INVALID for the caller itself, a detached thread or one already being joined
+ */
+int32_t IOS_JoinThread(int32_t thread, uint32_t *exit_value);
+
+/**
  * End a thread, which never returns when it is the caller's own.
  *
  * @param thread the thread's id, or 0 for the calling thread
@@ -62,12 +71,56 @@ int32_t IOS_CreateThread(ios_thread_entry entry, void *arg, void *stack_top, uin
 int32_t IOS_CancelThread(int32_t thread, uint32_t exit_value);
 
 /**
+ * Get the calling thread's id.
+ *
+ * @return the thread's id
+ */
+int32_t IOS_GetThreadId(void);
+
+/**
+ * Get the calling thread's process ID.
+ *
+ * @return the process ID
+ */
+int32_t IOS_GetProcessId(void);
+
+/**
  * Start a thread IOS_CreateThread made.
  *
  * @param thread the thread's id
  * @return IOS_ERROR_OK or a negative result
  */
 int32_t IOS_StartThread(int32_t thread);
+
+/**
+ * Stop a thread of the calling process from running.
+ *
+ * @param thread the thread's id, or 0 for the calling thread
+ * @return IOS_ERROR_OK, or IOS_ERROR_INVALID for a thread out of range, in another process or not running
+ */
+int32_t IOS_SuspendThread(int32_t thread);
+
+/**
+ * Let other threads of the same priority run before the calling thread continues.
+ */
+void IOS_YieldThread(void);
+
+/**
+ * Get a thread's priority.
+ *
+ * @param thread the thread's id, or 0 for the calling thread
+ * @return the priority, or IOS_ERROR_INVALID for a thread out of range or in another process
+ */
+int32_t IOS_GetThreadPriority(int32_t thread);
+
+/**
+ * Change a thread's priority, which takes effect at once.
+ *
+ * @param thread the thread's id, or 0 for the calling thread
+ * @param priority the new priority, below 0x80 and no higher than the process's highest
+ * @return IOS_ERROR_OK, or IOS_ERROR_INVALID for a thread or priority out of range or a thread in another process
+ */
+int32_t IOS_SetThreadPriority(int32_t thread, int32_t priority);
 
 /**
  * Create a message queue on a buffer the caller owns.

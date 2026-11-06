@@ -13,8 +13,15 @@
 
 // Kernel syscalls, with prototypes in ios/syscalls.h
 	syscall 0x00, IOS_CreateThread
+	syscall 0x01, IOS_JoinThread
 	syscall 0x02, IOS_CancelThread
+	syscall 0x03, IOS_GetThreadId
+	syscall 0x04, IOS_GetProcessId
 	syscall 0x05, IOS_StartThread
+	syscall 0x06, IOS_SuspendThread
+	syscall 0x07, IOS_YieldThread
+	syscall 0x08, IOS_GetThreadPriority
+	syscall 0x09, IOS_SetThreadPriority
 	syscall 0x0a, IOS_CreateMessageQueue
 	syscall 0x0e, IOS_ReceiveMessage
 	syscall 0x0f, IOS_HandleEvent

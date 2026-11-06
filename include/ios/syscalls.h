@@ -31,7 +31,7 @@ enum ios_error {
 };
 
 /**
- * A thread's entry point, which IOS_CreateThread starts the thread on.
+ * A thread's entry point.
  *
  * @param arg the argument passed to IOS_CreateThread
  * @return the thread's exit value
@@ -43,7 +43,7 @@ typedef void *(*ios_thread_entry)(void *arg);
  *
  * @param entry the function the thread runs, Thumb when its address has bit 0 set
  * @param arg the argument entry receives
- * @param stack_top the end of the stack buffer, since the stack grows down
+ * @param stack_top the end of the stack buffer
  * @param stack_size the stack's size in bytes
  * @param priority the thread's priority, below 0x80 and no higher than the caller's, a higher number running first
  * @param detached true to free the thread when it ends, false to keep its exit value for a join
@@ -114,7 +114,7 @@ void IOS_YieldThread(void);
 int32_t IOS_GetThreadPriority(int32_t thread);
 
 /**
- * Change a thread's priority, which takes effect at once.
+ * Change a thread's priority.
  *
  * @param thread the thread's id, or 0 for the calling thread
  * @param priority the new priority, below 0x80 and no higher than the process's highest
@@ -140,7 +140,7 @@ int32_t IOS_CreateMessageQueue(uint32_t *buffer, uint32_t count);
 int32_t IOS_DestroyMessageQueue(int32_t queue);
 
 /**
- * Add a message to the back of a queue of the calling process.
+ * Add a message to the back of a queue.
  *
  * @param queue the queue's id
  * @param message the message
@@ -150,7 +150,7 @@ int32_t IOS_DestroyMessageQueue(int32_t queue);
 int32_t IOS_SendMessage(int32_t queue, uint32_t message, uint32_t flags);
 
 /**
- * Add a message to the front of a queue of the calling process, so it is received next.
+ * Add a message to the front of a queue.
  *
  * @param queue the queue's id
  * @param message the message
@@ -180,7 +180,7 @@ int32_t IOS_ReceiveMessage(int32_t queue, uint32_t *message, uint32_t flags);
 int32_t IOS_HandleEvent(uint32_t event, int32_t queue, uint32_t message);
 
 /**
- * Stop posting messages for a hardware event IOS_HandleEvent set up.
+ * Stop posting messages for a hardware event.
  *
  * @param event the event's number
  * @return IOS_ERROR_OK, IOS_ERROR_ACCESS for another process's event, or IOS_ERROR_INVALID
@@ -199,7 +199,7 @@ int32_t IOS_UnregisterEventHandler(uint32_t event);
 int32_t IOS_CreateTimer(uint32_t time_us, uint32_t repeat_us, int32_t queue, uint32_t message);
 
 /**
- * Start a stopped timer again with new waits, keeping its queue and message.
+ * Start a stopped timer again with new waits.
  *
  * @param timer the timer's id
  * @param time_us the wait before the first message, in microseconds
@@ -209,7 +209,7 @@ int32_t IOS_CreateTimer(uint32_t time_us, uint32_t repeat_us, int32_t queue, uin
 int32_t IOS_RestartTimer(int32_t timer, uint32_t time_us, uint32_t repeat_us);
 
 /**
- * Stop a timer without freeing it, so IOS_RestartTimer can start it again.
+ * Stop a timer without freeing it.
  *
  * @param timer the timer's id
  * @return IOS_ERROR_OK, IOS_ERROR_ACCESS for another process's timer, or IOS_ERROR_INVALID
@@ -232,7 +232,7 @@ int32_t IOS_DestroyTimer(int32_t timer);
 uint32_t IOS_GetTime(void);
 
 /**
- * Create a heap on a buffer the caller owns, for IOS_Alloc to allocate from.
+ * Create a heap on a buffer the caller owns.
  *
  * @param buffer the heap's memory, 32-byte aligned
  * @param size the buffer's size in bytes
@@ -485,7 +485,7 @@ int32_t IOS_ClearAndEnableIPCIOPIntr(void);
 int32_t IOS_ClearAndEnableDIIntr(void);
 
 /**
- * Clear and unmask an SD controller's interrupt, for the one process that owns it.
+ * Clear and unmask an SD controller's interrupt.
  *
  * @param controller 0 for the SD slot, 1 for the Wi-Fi card, which only process 11 owns
  * @return IOS_ERROR_OK, IOS_ERROR_ACCESS for another process's controller, or another negative result
@@ -535,7 +535,7 @@ int32_t IOS_FreeIobuf(struct iobuf *iobuf);
 void *IOS_ExtendIobuf(struct iobuf *iobuf, uint16_t len);
 
 /**
- * Grow an iobuf's data at its start, such as to add a header.
+ * Grow an iobuf's data at its start.
  *
  * @param iobuf the iobuf
  * @param len the bytes to add
@@ -544,7 +544,7 @@ void *IOS_ExtendIobuf(struct iobuf *iobuf, uint16_t len);
 void *IOS_PushIob(struct iobuf *iobuf, uint16_t len);
 
 /**
- * Shrink an iobuf's data at its start, such as to strip a header.
+ * Shrink an iobuf's data at its start.
  *
  * @param iobuf the iobuf
  * @param len the bytes to remove

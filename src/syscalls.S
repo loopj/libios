@@ -34,6 +34,11 @@
 	syscall 0x13, IOS_StopTimer
 	syscall 0x14, IOS_DestroyTimer
 	syscall 0x15, IOS_GetTime
+	syscall 0x16, IOS_CreateHeap
+	syscall 0x17, IOS_DestroyHeap
+	syscall 0x18, IOS_Alloc
+	syscall 0x19, IOS_AllocAligned
+	syscall 0x1a, IOS_Free
 	syscall 0x1b, IOS_RegisterResourceManager
 	syscall 0x1c, IOS_Open
 	syscall 0x28, IOS_IoctlAsync

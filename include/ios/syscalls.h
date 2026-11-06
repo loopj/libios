@@ -232,6 +232,51 @@ int32_t IOS_DestroyTimer(int32_t timer);
 uint32_t IOS_GetTime(void);
 
 /**
+ * Create a heap on a buffer the caller owns, for IOS_Alloc to allocate from.
+ *
+ * @param buffer the heap's memory, 32-byte aligned
+ * @param size the buffer's size in bytes
+ * @return the heap's id, IOS_ERROR_MAX when all 16 heaps are taken, or another negative result
+ */
+int32_t IOS_CreateHeap(void *buffer, uint32_t size);
+
+/**
+ * Free a heap.
+ *
+ * @param heap the heap's id
+ * @return IOS_ERROR_OK, IOS_ERROR_ACCESS for heap 0 or another process's heap, or IOS_ERROR_INVALID
+ */
+int32_t IOS_DestroyHeap(int32_t heap);
+
+/**
+ * Allocate a block from a heap.
+ *
+ * @param heap the heap's id
+ * @param size the block's size in bytes, rounded up to a multiple of 32
+ * @return the block, 32-byte aligned, or NULL
+ */
+void *IOS_Alloc(int32_t heap, uint32_t size);
+
+/**
+ * Allocate an aligned block from a heap.
+ *
+ * @param heap the heap's id
+ * @param size the block's size in bytes, rounded up to a multiple of 32
+ * @param align the block's alignment, a power of two, with anything below 32 taken as 32
+ * @return the block, or NULL
+ */
+void *IOS_AllocAligned(int32_t heap, uint32_t size, uint32_t align);
+
+/**
+ * Return a block to the heap it came from.
+ *
+ * @param heap the heap's id
+ * @param block the block
+ * @return IOS_ERROR_OK, or IOS_ERROR_INVALID for a block not allocated from the heap
+ */
+int32_t IOS_Free(int32_t heap, void *block);
+
+/**
  * Register a device path whose requests arrive on a queue as struct ipcmessage pointers.
  *
  * @param path the device path, which every open path it is a prefix of matches
